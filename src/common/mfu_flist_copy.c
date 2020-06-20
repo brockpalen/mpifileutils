@@ -1591,6 +1591,10 @@ static int mfu_copy_file_normal(
         if(left_to_read > buf_size) {
             left_to_read = buf_size;
         }
+        if(mfu_copy_opts->synchronous) {
+            /* O_DIRECT requires particular read sizes */
+            left_to_read = buf_size;
+        }
 
         /* read data from source file */
         ssize_t num_of_bytes_read = mfu_read(src, in_fd, buf, left_to_read);
